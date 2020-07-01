@@ -77,9 +77,9 @@ for i in range(1, MAX_PAGES):
 
 for token, price in tokenPrice.items():
     print(f"{token} net supply: ${tokenSupplyNet[token] * price:,.2f}")
-    print(f"{token} net supply: ${tokenBorrowNet[token] * price:,.2f}")
+    print(f"{token} net borrow: ${tokenBorrowNet[token] * price:,.2f}")
     print(f"{token} gross supply: ${tokenSupplyGross[token] * price:,.2f}")
-    print(f"{token} gross supply: ${tokenBorrowGross[token] * price:,.2f}")
+    print(f"{token} gross borrow: ${tokenBorrowGross[token] * price:,.2f}")
 
 
 print(f"Total net supply: ${sum([tokenSupplyNet[token] * price for (token, price) in tokenPrice.items()]):,.2f}")
