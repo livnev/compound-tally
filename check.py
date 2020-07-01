@@ -1,4 +1,5 @@
 import requests
+import time
 
 COMPOUND_API = "https://api.compound.finance/api/v2/account"
 MAX_PAGES = 10000
