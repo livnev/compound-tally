@@ -3,7 +3,9 @@ import time
 
 COMPOUND_API = "https://api.compound.finance/api/v2/account"
 MAX_PAGES = 10000
+PAGE_SIZE = 500
 REQUERY_SLEEP_TIME = 1
+MAX_REQUERY_SLEEP_TIME = 3
 
 cTokenToToken = {
     '0x6c8c6b02e7b2be14d4fa6022dfd6d75921d90e4e': 'BAT',
@@ -38,8 +40,8 @@ prev_page_number = 0
 sleep_time = REQUERY_SLEEP_TIME
 
 for i in range(1, MAX_PAGES):
-    while True:
-        query = COMPOUND_API + f"?page_number={i}"
+    while sleep_time < MAX_REQUERY_SLEEP_TIME:
+        query = COMPOUND_API + f"?page_size={PAGE_SIZE}&page_number={i}"
         response = requests.get(query)
         if response.ok:
             sleep_time = REQUERY_SLEEP_TIME
@@ -48,6 +50,10 @@ for i in range(1, MAX_PAGES):
             print(f"{query} got error response: {response}, waiting for {sleep_time} seconds")
             time.sleep(sleep_time)
             sleep_time += 1
+    else:
+        print(f"Could not retrieve page {i}, skipping...")
+        sleep_time = REQUERY_SLEEP_TIME
+        continue
 
     j = response.json()
     if j["pagination_summary"]["page_number"] <= prev_page_number:
