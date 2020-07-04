@@ -37,9 +37,11 @@ tokenBorrowGross = {key: 0.0 for key in tokenPrice.keys()}
 tokenSupplyGross = {key: 0.0 for key in tokenPrice.keys()}
 
 prev_page_number = 0
+num_pages = "?"
 sleep_time = REQUERY_SLEEP_TIME
 
 for i in range(1, MAX_PAGES):
+    print(f"Loading page {i}/{num_pages}...", end='\r')
     while sleep_time < MAX_REQUERY_SLEEP_TIME:
         query = COMPOUND_API + f"?page_size={PAGE_SIZE}&page_number={i}"
         response = requests.get(query)
@@ -60,6 +62,7 @@ for i in range(1, MAX_PAGES):
         break
     else:
         prev_page_number = j["pagination_summary"]["page_number"]
+        num_pages = str(j["pagination_summary"]["total_pages"])
     for account in j["accounts"]:
         for cToken in account["tokens"]:
             if cToken['address'] not in cTokenToToken:
